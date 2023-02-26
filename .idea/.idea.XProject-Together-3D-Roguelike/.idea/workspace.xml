@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7094081c-eab2-4a63-a4a7-257f6df5d5d8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/FSM.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/FSM.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/FSMCustomState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/FSMCustomState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/IState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Framework/IState.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.XProject-Together-3D-Roguelike/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.XProject-Together-3D-Roguelike/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Animator-Yuko-y/Yuko-y.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Animator-Yuko-y/Yuko-y.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Walking.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Walking.fbx.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/HelloDemoScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/HelloDemoScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CharControl/YokuYMoveControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CharControl/YokuYMoveControl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/URP UniVrm/VRM/Editor/LookAt/VRMLookAtHeadEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/URP UniVrm/VRM/Editor/LookAt/VRMLookAtHeadEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +15,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/ILViewer/685c48cf8f0b48abb797275c046dda6a158a00/e1/833c6efe/0200024F.il" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/17/f722b9a6/Object.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/63965ae56af7489797f355b7c1211ab281aa00/50/a76a24a2/PreviewRenderUtility.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/685c48cf8f0b48abb797275c046dda6a158a00/19/813ce20e/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/685c48cf8f0b48abb797275c046dda6a158a00/4e/d12d6804/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/685c48cf8f0b48abb797275c046dda6a158a00/57/9c821c31/Component.cs" root0="SKIP_HIGHLIGHTING" />
@@ -87,7 +77,7 @@
       <option name="presentableId" value="Default" />
       <updated>1677407034489</updated>
       <workItem from="1677407040330" duration="4000" />
-      <workItem from="1677410839209" duration="8685000" />
+      <workItem from="1677410839209" duration="10859000" />
     </task>
     <servers />
   </component>

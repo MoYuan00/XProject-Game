@@ -83,6 +83,7 @@ namespace VRM
 
         private void OnDisable()
         {
+            m_previewRenderUtility.EndPreview();
             m_previewRenderUtility.Cleanup();
             m_previewRenderUtility = null;
         }
