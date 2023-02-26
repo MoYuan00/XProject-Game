@@ -1,0 +1,4 @@
+repository "XProject-Together-3D-Roguelike@becoz@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
