@@ -39,13 +39,13 @@ namespace Framework
 
         public void ForceChangeState(T t)
         {
+            _currentState?.Exit(); // 退出上一个状态
             if (_states.TryGetValue(t, out var state))
             {
-                _currentState?.Exit(); // 退出上一个状态
                 _currentStateId = t;
                 _currentState = state; // 进入下一个状态
-                _currentState.Enter();
             }
+            _currentState?.Enter();
         }
 
         public void StartState(T t)
