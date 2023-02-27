@@ -1,15 +1,14 @@
 fileFormatVersion: 2
-guid: 907035159fbb8dd4f9731ab21b0ce1bd
+guid: 68574921e2525fa4590f29a4b322ea8d
 labels:
-- Particles
 - cartoonfx
 - explosion
-- ground
 - particles
-- text
+- smoke
 - toon
-PrefabImporter:
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
