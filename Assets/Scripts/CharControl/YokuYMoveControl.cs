@@ -25,15 +25,12 @@ public class YokuYMoveControl : MonoBehaviour
         _fsm.StartState(CharMoveState.Idle);
 
         _fsm.State(CharMoveState.Moving)
-            .OnEnter(() =>
-            {
-                Debug.Log("Moving");
-            })
             .OnUpdate(() =>
             {
                 RotatePlayer();
                 MovePlayer();
-            }).OnExit(() =>
+            })
+            .OnExit(() =>
             {
                 _targetSpeed = 0f;
                 animator.SetFloat(WalkingSpeed, 0.0f);
@@ -61,14 +58,12 @@ public class YokuYMoveControl : MonoBehaviour
         if (ctx.phase == InputActionPhase.Canceled)
         {
             _fsm.ChangeState(CharMoveState.Idle);
-            Debug.Log($"OnMoveInput:Canceled");
         }
         else
         {
             _moveVec2 = ctx.ReadValue<Vector2>();
             _fsm.ChangeState(CharMoveState.Moving);
         }
-        Debug.Log($"OnMoveInput:{_moveVec2}");
     }
 
     private void OnAnimatorMove()
@@ -80,13 +75,11 @@ public class YokuYMoveControl : MonoBehaviour
     {
         animator.SetFloat(WalkingSpeed, _targetSpeed);
         _targetSpeed = Mathf.Lerp(_targetSpeed, walkingSpeed, 0.5f);// 插值
-        Debug.Log($"MovePlayer:{_targetSpeed}");
     }
 
     private void RotatePlayer()
     {
         var rotateVec = new Vector3(_moveVec2.x, 0, _moveVec2.y);
-        Debug.Log($"RotatePlayer:{rotateVec}");
         // 获取方向
         Quaternion target = Quaternion.LookRotation(rotateVec, Vector3.up);
         // 转向

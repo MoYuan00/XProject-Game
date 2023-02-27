@@ -24,15 +24,11 @@ namespace Test
             _fsm.StartState(CharMoveState.Idle);
 
             _fsm.State(CharMoveState.Moving)
-                .OnEnter(() => { Debug.Log("Moving"); })
                 .OnUpdate(() =>
                 {
                     RotatePlayer();
                     MovePlayer();
-                }).OnExit(() =>
-                {
-                    _targetSpeed = 0f;
-                });
+                }).OnExit(()=>_targetSpeed = 0f);
         }
 
         private void Update()
