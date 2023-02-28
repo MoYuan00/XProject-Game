@@ -22,8 +22,8 @@ public class Camera3rdSyncPlayerRotate : MonoBehaviour
 
     private void Start()
     {
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         CameraManager.OnCameraModeChange.AddListener(OnChangeCameraMode);
         OnChangeCameraMode(CameraManager.CurrentCameraMode);
     }
