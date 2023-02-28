@@ -40,10 +40,11 @@ namespace CharControl
                 .OnEnter(() =>
                 {
                     animator.SetBool(PistolAim, true);
-                    
+                    CameraManager.ChangeCameraState(CamerasActiveState.AimingView);
                 })
                 .OnExit(() =>
                 {
+                    CameraManager.ChangeCameraState(CamerasActiveState.TherePeopleView);
                     animator.SetBool(PistolAim, false);
                 });
             

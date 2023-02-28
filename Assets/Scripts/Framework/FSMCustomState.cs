@@ -50,6 +50,7 @@ namespace Framework
 
         public IState Update()
         {
+            // _onUpdate?.Method.Invoke(null, null);
             _onUpdate?.Invoke();
             return this;
         }
