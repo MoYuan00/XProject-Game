@@ -1,26 +1,21 @@
-using System;
 using UnityEngine;
 
 public class CameraAction : MonoBehaviour
 {
-    // public CameraActionItem[] actionList;
-    public CamerasActiveState cameraState;
+    public CameraMode cameraState;
+
+    public bool isDefault = false;
 
     private void Start()
     {
-        OnCameraChange(CameraManager.currentCameraState);
-        CameraManager.onCameraActiveStateChange.AddListener(OnCameraChange);
+        OnCameraChange(CameraManager.CurrentCameraMode);
+        CameraManager.OnCameraModeChange.AddListener(OnCameraChange);
+        
+        if(isDefault) CameraManager.ChangeCameraState(cameraState);
     }
 
-    private void OnCameraChange(CamerasActiveState activeState)
+    private void OnCameraChange(CameraMode activeState)
     {
         gameObject.SetActive(cameraState == activeState);
     }
 }
-
-// [System.Serializable]
-// public struct CameraActionItem
-// {
-// public CamerasActiveState cameraState;
-// public bool isActive;
-// }

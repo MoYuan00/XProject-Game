@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RotateCamera",
+                    "type": "Value",
+                    "id": "9147ab7a-de9e-4c2d-a659-64b9c2c9a65a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -265,7 +274,18 @@
                 },
                 {
                     "name": "",
-                    "id": "7fe8a4ea-2a13-41cd-9511-5cfcba3fcc01",
+                    "id": "321837bc-4498-454f-8442-f653ce59bb35",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "52fbe202-367b-4095-9ca6-32608d1b1f2b",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",

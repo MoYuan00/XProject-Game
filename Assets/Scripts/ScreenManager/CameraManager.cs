@@ -12,22 +12,21 @@ using UnityEngine.Events;
 /// </summary>
 public static class CameraManager
 {
-    private static FSM<CamerasActiveState> _fsm = new FSM<CamerasActiveState>();
+    public static CameraMode CurrentCameraMode { get; private set; }
 
-    public static UnityEvent<CamerasActiveState> onCameraActiveStateChange = new UnityEvent<CamerasActiveState>();
+    public static readonly UnityEvent<CameraMode> OnCameraModeChange = new UnityEvent<CameraMode>();
 
-    public static CamerasActiveState currentCameraState;
-
-    public static void ChangeCameraState(CamerasActiveState activeState)
+    public static void ChangeCameraState(CameraMode cameraState)
     {
-        currentCameraState = activeState;
-        Debug.Log($"ChangeCameraState:{activeState}");
-        onCameraActiveStateChange?.Invoke(activeState);
+        CurrentCameraMode = cameraState;
+        Debug.Log($"ChangeCameraState:{cameraState}");
+        OnCameraModeChange.Invoke(cameraState);
     }
 }
 
-public enum CamerasActiveState
+public enum CameraMode
 {
-    TherePeopleView,
-    AimingView,
+    WalkingAim,
+    Free,
+    FreeHigh
 }
