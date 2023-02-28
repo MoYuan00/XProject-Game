@@ -6,7 +6,7 @@ namespace CharControl
 {
     public class Camera3rdPlayerMoveControl : MonoBehaviour
     {
-        private FSM<CharMoveState> _fsm = new FSM<CharMoveState>();
+        private FSMArray<CharMoveState> _fsm = new FSMArray<CharMoveState>();
         private Transform _transform;
 
         public CharacterController characterController;
@@ -23,10 +23,10 @@ namespace CharControl
         private void Awake()
         {
             _transform = transform;
-            _fsm.State(CharMoveState.Idle).OnEnter(() => { Debug.Log("Idle OnEnter"); });
-            _fsm.StartState(CharMoveState.Idle);
+            _fsm.Register(CharMoveState.Idle).OnEnter(() => { Debug.Log("Idle OnEnter"); });
+            _fsm.ChangeState(CharMoveState.Idle);
 
-            _fsm.State(CharMoveState.PistolAim)
+            _fsm.Register(CharMoveState.PistolAim, CharMoveState.Running)
                 .OnEnter(() =>
                 {
                     animator.SetBool(PistolAim, true);
@@ -38,7 +38,7 @@ namespace CharControl
                     CameraManager.ChangeCameraState(CameraMode.Free);
                 });
 
-            _fsm.State(CharMoveState.Running)
+            _fsm.Register(CharMoveState.Running, CharMoveState.PistolAim)
                 .OnEnter(() => { animator.SetBool(IsRunning, true); })
                 .OnUpdate(() => { MovePlayer(); })
                 .OnExit(() => { animator.SetBool(IsRunning, false); });
@@ -56,7 +56,6 @@ namespace CharControl
 
         private void MovePlayer()
         {
-            if (_targetSpeed <= 0) return;
             characterController.SimpleMove(_transform.forward * _targetSpeed);
             _targetSpeed = Mathf.Lerp(_targetSpeed, runningSpeed, 0.5f); // 插值
         }
@@ -68,23 +67,25 @@ namespace CharControl
         {
             switch (ctx.phase)
             {
-                case InputActionPhase.Started:
-                    return;
                 case InputActionPhase.Canceled:
-                    _fsm.ChangeState(CharMoveState.Idle);
-                    break;
-                default:
+                    if(_fsm.IsRunning(CharMoveState.Running))
+                        _fsm.ExitState(CharMoveState.Running);
+                    return;
+                case InputActionPhase.Performed:
                     _fsm.ChangeState(CharMoveState.Running);
-                    break;
+                    return;
             }
         }
 
         public void OnPistolAim(InputAction.CallbackContext ctx)
         {
             if (ctx.phase != InputActionPhase.Performed) return;
-            _fsm.ChangeState(_fsm.CurrentStateId == CharMoveState.PistolAim
-                ? CharMoveState.Idle
-                : CharMoveState.PistolAim);
+            if (_fsm.IsRunning(CharMoveState.PistolAim))
+            {
+                _fsm.ExitState(CharMoveState.PistolAim);
+                return;
+            }
+            _fsm.ChangeState(CharMoveState.PistolAim);
         }
 
         #endregion

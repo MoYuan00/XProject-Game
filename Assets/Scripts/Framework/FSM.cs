@@ -6,20 +6,18 @@ namespace Framework
 {
     public class FSM<T>  // T state type
     {
-        private Dictionary<T, IState> _states = new Dictionary<T, IState>();
+        protected Dictionary<T, IState> _states = new Dictionary<T, IState>();
 
-        private IState _currentState;
-        private T _currentStateId;
+        protected IState _currentState;
+        protected T _currentStateId;
 
-        public IState CurrentState => _currentState;
-        public T CurrentStateId => _currentStateId;
 
         /// <summary>
         /// 注册状态机
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public FSMCustomState State(T t)
+        public virtual FSMCustomState State(T t)
         {
             if (_states.ContainsKey(t))
             {
@@ -31,13 +29,13 @@ namespace Framework
             return state;
         }
 
-        public void ChangeState(T t)
+        public virtual void ChangeState(T t)
         {
             if ((_currentStateId).Equals(t)) return;
             ForceChangeState(t);
         }
 
-        public void ForceChangeState(T t)
+        public virtual void ForceChangeState(T t)
         {
             _currentState?.Exit(); // 退出上一个状态
             if (_states.TryGetValue(t, out var state))
@@ -48,7 +46,7 @@ namespace Framework
             _currentState?.Enter();
         }
 
-        public void StartState(T t)
+        public virtual void StartState(T t)
         {
             if (_states.TryGetValue(t, out var state))
             {
@@ -58,21 +56,26 @@ namespace Framework
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
             _currentState?.Update();
         }
 
-        public void FixUpdate()
+        public virtual void FixUpdate()
         {
             _currentState?.FixUpdate();
+        }
+        
+        public virtual bool IsRunning(T stateId)
+        {
+            return stateId.Equals(_currentStateId);
         }
 
         /// <summary>
         /// Clear时，如还有状态在运行中，这里不会再管理。直接clear。
         /// 也就是说如果在状态运行时发生clear，那么状态的OnExit不会被执行到
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             _currentState = null;
             _currentStateId = default;
