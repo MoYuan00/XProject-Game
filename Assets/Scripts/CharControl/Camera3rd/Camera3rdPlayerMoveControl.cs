@@ -29,12 +29,12 @@ namespace CharControl
             _fsm.State(CharMoveState.PistolAim)
                 .OnEnter(() =>
                 {
-                    // animator.SetBool(PistolAim, true);
+                    animator.SetBool(PistolAim, true);
                     CameraManager.ChangeCameraState(CameraMode.WalkingAim);
                 })
                 .OnExit(() =>
                 {
-                    // animator.SetBool(PistolAim, false);
+                    animator.SetBool(PistolAim, false);
                     CameraManager.ChangeCameraState(CameraMode.Free);
                 });
 
