@@ -22,10 +22,24 @@ public class Manager : MonoBehaviour
         get { return _event; }
     }
 
+    private static Main_UI _main_ui;
+    public static Main_UI Main_ui
+    {
+        get { return _main_ui; }
+    }
+
+    private static UIManager _ui;
+    public static UIManager UI
+    {
+        get { return _ui; }
+    }
+
     private void Awake()
     {
         _pool = this.gameObject.AddComponent<PoolManager>();
         _sound = this.gameObject.AddComponent<SoundManager>();
         _event = this.gameObject.AddComponent<EventManager>();
+        _main_ui = this.gameObject.AddComponent<Main_UI>();
+        _ui = this.gameObject.GetComponent<UIManager>();
     }
 }
