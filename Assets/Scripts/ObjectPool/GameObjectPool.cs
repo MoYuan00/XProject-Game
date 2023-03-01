@@ -1,34 +1,34 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameObjectPool : PoolBase
 {
     /// <summary>
-    /// È¡³ö¶ÔÏó
+    /// å–å‡ºå¯¹è±¡
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
     public override Object Spwan(string name)
     {
-        //Ã»ÕÒµ½·µ»Ønull
+        //æ²¡æ‰¾åˆ°è¿”å›null
         Object obj = base.Spwan(name);
         if (obj == null)
             return null;
-        //ÕÒµ½ÁË·µ»ØGameObjectÀàĞÍ,²¢ÇÒÏÔÊ¾³öÀ´
+        //æ‰¾åˆ°äº†è¿”å›GameObjectç±»å‹,å¹¶ä¸”æ˜¾ç¤ºå‡ºæ¥
         GameObject go = obj as GameObject;
         go.SetActive(true);
         return obj;
     }
 
     /// <summary>
-    /// »ØÊÕ¶ÔÏó
+    /// å›æ”¶å¯¹è±¡
     /// </summary>
     /// <param name="name"></param>
     /// <param name="obj"></param>
     public override void UnSpwan(string name, Object obj)
     {
-        //Òş²ØGameObject ¹ÒÔØÎ»ÖÃÒÆ¶¯µ½Õâ¸ö¶ÔÏó³ØÉÏÃæ »ØÊÕ¶ÔÏó
+        //éšè—GameObject æŒ‚è½½ä½ç½®ç§»åŠ¨åˆ°è¿™ä¸ªå¯¹è±¡æ± ä¸Šé¢ å›æ”¶å¯¹è±¡
         GameObject go = obj as GameObject;
         go.SetActive(false);
         go.transform.SetParent(this.transform, false);
@@ -36,20 +36,20 @@ public class GameObjectPool : PoolBase
     }
 
     /// <summary>
-    /// ÊÍ·Å³¬¹ıÏú»ÙÊ±¼äµÄ¶ÔÏó
+    /// é‡Šæ”¾è¶…è¿‡é”€æ¯æ—¶é—´çš„å¯¹è±¡
     /// </summary>
     public override void Release()
     {
         base.Release();
         foreach (PoolObject item in m_Objects)
         {
-            //ÏÖÔÚÊ±¼ä¼õÈ¥¾ßÌåÃ¿¸ö¶ÔÏóÉÏÒ»´ÎÊ¹ÓÃµÄÊ±¼ä,Èç¹û´óÓÚÊÍ·ÅÏú»ÙÊ±¼ä,ÔòÖ´ĞĞÏú»ÙÂß¼­
+            //ç°åœ¨æ—¶é—´å‡å»å…·ä½“æ¯ä¸ªå¯¹è±¡ä¸Šä¸€æ¬¡ä½¿ç”¨çš„æ—¶é—´,å¦‚æœå¤§äºé‡Šæ”¾é”€æ¯æ—¶é—´,åˆ™æ‰§è¡Œé”€æ¯é€»è¾‘
             if (System.DateTime.Now.Ticks - item.LastUseTime.Ticks >= m_ReleaseTime * 10000000)
             {
                 Debug.Log("GameObjectPool release  time:" + System.DateTime.Now);
-                Destroy(item.Object);//Ïú»Ù¶ÔÏóÎïÌå
-                m_Objects.Remove(item);//ÒÆ³ı¶ÔÏó³Ø
-                Release();//ÔÙ±éÀú×Ô¼ºÒ»±éÒòÎªÒÆ³ıÁËÒ»¸ölistÀïÃæµÄÊı¾İ,²»ÖØĞÂ±éÀú¼ÌĞø±éÀú»á±¨´í
+                Destroy(item.Object);//é”€æ¯å¯¹è±¡ç‰©ä½“
+                m_Objects.Remove(item);//ç§»é™¤å¯¹è±¡æ± 
+                Release();//å†éå†è‡ªå·±ä¸€éå› ä¸ºç§»é™¤äº†ä¸€ä¸ªlisté‡Œé¢çš„æ•°æ®,ä¸é‡æ–°éå†ç»§ç»­éå†ä¼šæŠ¥é”™
                 return;
             }
         }

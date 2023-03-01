@@ -1,41 +1,41 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
 
-    /*****************¶ÔÏó³Ø¹ÜÀíÆ÷******************/
+    /*****************å¯¹è±¡æ± ç®¡ç†å™¨******************/
 
 
-    //¹ÒÔØ¶ÔÏó³ØµÄ¸¸½ÚµãÎ»ÖÃ
+    //æŒ‚è½½å¯¹è±¡æ± çš„çˆ¶èŠ‚ç‚¹ä½ç½®
     Transform m_PoolParent;
 
-    //¶ÔÏó³Ø×Öµä
+    //å¯¹è±¡æ± å­—å…¸
     Dictionary<string, PoolBase> m_Pools = new Dictionary<string, PoolBase>();
 
     private void Awake()
     {
-        //³õÊ¼»¯»ñÈ¡¸¸½ÚµãµÄÎ»ÖÃ
+        //åˆå§‹åŒ–è·å–çˆ¶èŠ‚ç‚¹çš„ä½ç½®
         m_PoolParent = this.transform.parent.Find("Pool");
     }
 
     /// <summary>
-    /// ´´½¨¶ÔÏó³Ø
+    /// åˆ›å»ºå¯¹è±¡æ± 
     /// </summary>
-    /// <typeparam name="T">¶ÔÏó³ØÀàĞÍ</typeparam>
-    /// <param name="poolName">¶ÔÏó³ØÃû³Æ</param>
-    /// <param name="releaseTime">¶ÔÏó³Ø×Ô¶¯ÊÍ·ÅÊ±¼ä/Ãë</param>
+    /// <typeparam name="T">å¯¹è±¡æ± ç±»å‹</typeparam>
+    /// <param name="poolName">å¯¹è±¡æ± åç§°</param>
+    /// <param name="releaseTime">å¯¹è±¡æ± è‡ªåŠ¨é‡Šæ”¾æ—¶é—´/ç§’</param>
     private void CreatePool<T>(string poolName, float releaseTime)
         where T : PoolBase
-    {//¶ÔÏó³Ø×Öµä²»°üº¬²ÅÖ´ĞĞ´´½¨¶ÔÏó³Ø
+    {//å¯¹è±¡æ± å­—å…¸ä¸åŒ…å«æ‰æ‰§è¡Œåˆ›å»ºå¯¹è±¡æ± 
         if (!m_Pools.TryGetValue(poolName, out PoolBase pool))
         {
-            //ÊµÀı»¯Ò»¸ö¶ÔÏópoolname
+            //å®ä¾‹åŒ–ä¸€ä¸ªå¯¹è±¡poolname
             GameObject go = new GameObject(poolName);
-            //ÉèÖÃ¶ÔÏó³Ø¸¸½Úµã
+            //è®¾ç½®å¯¹è±¡æ± çˆ¶èŠ‚ç‚¹
             go.transform.SetParent(m_PoolParent);
-            //´´½¨¶ÔÏó³Ø½Å±¾¹ÒÔØÉÏÈ¥
+            //åˆ›å»ºå¯¹è±¡æ± è„šæœ¬æŒ‚è½½ä¸Šå»
             pool = go.AddComponent<T>();
             pool.Init(releaseTime);
             m_Pools.Add(poolName, pool);
@@ -43,7 +43,7 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ´´½¨ÎïÌå¶ÔÏó³Ø
+    /// åˆ›å»ºç‰©ä½“å¯¹è±¡æ± 
     /// </summary>
     /// <param name="poolName"></param>
     /// <param name="releaseTime"></param>
@@ -53,24 +53,24 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// È¡³ö¶ÔÏó ´«ÈëÒª²Ù×÷µÄ¶ÔÏó³ØµÄÃû×Ö ºÍÒªÈ¡³öµÄ¶ÔÏóÃû×Ö
+    /// å–å‡ºå¯¹è±¡ ä¼ å…¥è¦æ“ä½œçš„å¯¹è±¡æ± çš„åå­— å’Œè¦å–å‡ºçš„å¯¹è±¡åå­—
     /// </summary>
     /// <param name="poolName"></param>
     /// <param name="assetName"></param>
     /// <returns></returns>
     public Object Spawn(string poolName, string assetName)
     {
-        //´Ó×ÖµäÖĞÕÒµ½¸Ã¶ÔÏó³Ø
+        //ä»å­—å…¸ä¸­æ‰¾åˆ°è¯¥å¯¹è±¡æ± 
         if (m_Pools.TryGetValue(poolName, out PoolBase pool))
         {
-            //´«ÈëÒªÈ¡³ö¶ÔÏóÃû×Ö,È¡³ö¶ÔÏó
+            //ä¼ å…¥è¦å–å‡ºå¯¹è±¡åå­—,å–å‡ºå¯¹è±¡
             return pool.Spwan(assetName);
         }
         return null;
     }
 
     /// <summary>
-    /// »ØÊÕ¶ÔÏó Òª»ØÊÕµ½µÄ³Ø×Ó ¶ÔÏóÃû×Ö ¶ÔÏóÀàĞÍ
+    /// å›æ”¶å¯¹è±¡ è¦å›æ”¶åˆ°çš„æ± å­ å¯¹è±¡åå­— å¯¹è±¡ç±»å‹
     /// </summary>
     /// <param name="poolName"></param>
     /// <param name="assetName"></param>
@@ -78,7 +78,7 @@ public class PoolManager : MonoBehaviour
     public void UnSpawn(string poolName, string assetName, Object asset)
     {
         if (m_Pools.TryGetValue(poolName, out PoolBase pool))
-        {//»ØÊÕ¶ÔÏó
+        {//å›æ”¶å¯¹è±¡
             pool.UnSpwan(assetName, asset);
         }
     }

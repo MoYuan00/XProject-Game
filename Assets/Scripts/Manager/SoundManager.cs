@@ -1,19 +1,19 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
 
-    /*****************ÉùÒô¹ÜÀíÆ÷******************/
+    /*****************å£°éŸ³ç®¡ç†å™¨******************/
 
-    //ÒôÀÖ
+    //éŸ³ä¹
     AudioSource m_MusicAudio;
-    //ÒôĞ§
+    //éŸ³æ•ˆ
     AudioSource m_SoundAudio;
 
     /// <summary>
-    /// ÒôĞ§ÒôÁ¿
+    /// éŸ³æ•ˆéŸ³é‡
     /// </summary>
     private float SoundVolume
     {
@@ -26,7 +26,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÒôÀÖÒôÁ¿
+    /// éŸ³ä¹éŸ³é‡
     /// </summary>
     private float MusicVolume
     {
@@ -40,45 +40,45 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        //ÒôÀÖ×é¼ş³õÊ¼»¯
+        //éŸ³ä¹ç»„ä»¶åˆå§‹åŒ–
         m_MusicAudio = this.gameObject.AddComponent<AudioSource>();
-        //×Ô¶¯²¥·Å¹Ø±Õ Èç¹ûÉÏÃæÓĞ¹ÒÔØÒôÀÖ»á×Ô¶¯²¥·Å,Õâ¸öÄ¿Ç°²»ĞèÒª×Ô¶¯²¥·Å
+        //è‡ªåŠ¨æ’­æ”¾å…³é—­ å¦‚æœä¸Šé¢æœ‰æŒ‚è½½éŸ³ä¹ä¼šè‡ªåŠ¨æ’­æ”¾,è¿™ä¸ªç›®å‰ä¸éœ€è¦è‡ªåŠ¨æ’­æ”¾
         m_MusicAudio.playOnAwake = false;
-        //Ñ­»·²¥·Å
+        //å¾ªç¯æ’­æ”¾
         m_MusicAudio.loop = true;
 
-        //ÒôĞ§×é¼ş³õÊ¼»¯
+        //éŸ³æ•ˆç»„ä»¶åˆå§‹åŒ–
         m_SoundAudio = this.gameObject.AddComponent<AudioSource>();
-        //¹Ø±ÕÑ­»· ÒòÎªÉÏÃæÒ²Ã»¹ÒÔØÒôĞ§ÊÇ¶¯Ì¬Ìí¼ÓµÄËùÒÔ×Ô¶¯²¥·Å¿ª¹ØĞ§¹û¶¼ÊÇ¹Ø,ËùÒÔÃ»Ğ´ÒòÎª¶àÓà
+        //å…³é—­å¾ªç¯ å› ä¸ºä¸Šé¢ä¹Ÿæ²¡æŒ‚è½½éŸ³æ•ˆæ˜¯åŠ¨æ€æ·»åŠ çš„æ‰€ä»¥è‡ªåŠ¨æ’­æ”¾å¼€å…³æ•ˆæœéƒ½æ˜¯å…³,æ‰€ä»¥æ²¡å†™å› ä¸ºå¤šä½™
         m_SoundAudio.loop = false;
     }
 
     /// <summary>
-    /// ²¥·ÅÒôÀÖ
+    /// æ’­æ”¾éŸ³ä¹
     /// </summary>
     /// <param name="name"></param>
     public void PlayMusic(string name)
     {
-        //ĞÔÄÜ¿¼ÂÇÒôÁ¿Ğ¡ÓÚ0.1¾Í²»²¥·ÅÁË
+        //æ€§èƒ½è€ƒè™‘éŸ³é‡å°äº0.1å°±ä¸æ’­æ”¾äº†
         if (this.MusicVolume < 0.1f)
             return;
         string oldName = "";
         if (m_MusicAudio.clip != null)
             oldName = m_MusicAudio.clip.name;
-        //ÏàÍ¬ÒôÀÖ²»ÖØ¸´¼ÓÔØ
+        //ç›¸åŒéŸ³ä¹ä¸é‡å¤åŠ è½½
         if (oldName == name)
         {
             m_MusicAudio.Play();
             return;
         }
-        //¼ÓÔØÒôÀÖ²¢²¥·Å
+        //åŠ è½½éŸ³ä¹å¹¶æ’­æ”¾
         AudioClip audioClip = Resources.Load(name) as AudioClip;
         m_MusicAudio.clip = audioClip;
         m_MusicAudio.Play();
     }
 
     /// <summary>
-    /// ÔİÍ£ÒôÀÖ
+    /// æš‚åœéŸ³ä¹
     /// </summary>
     public void PauseMusic()
     {
@@ -86,7 +86,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¼ÌĞø²¥·Å
+    /// ç»§ç»­æ’­æ”¾
     /// </summary>
     public void OnUnPauseMusic()
     {
@@ -94,7 +94,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Í£Ö¹ÒôÀÖ
+    /// åœæ­¢éŸ³ä¹
     /// </summary>
     public void StopMusic()
     {
@@ -102,19 +102,19 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ²¥·ÅÒôĞ§
+    /// æ’­æ”¾éŸ³æ•ˆ
     /// </summary>
     public void PlaySound(string name)
     {
         if (this.SoundVolume < 0.1f)
             return;
-        //¼ÓÔØÒôĞ§²¢²¥·Å
+        //åŠ è½½éŸ³æ•ˆå¹¶æ’­æ”¾
         AudioClip audioClip = Resources.Load(name) as AudioClip;
         m_SoundAudio.PlayOneShot(audioClip);
     }
 
     /// <summary>
-    /// ÉèÖÃ±³¾°ÒôÀÖÒôÁ¿
+    /// è®¾ç½®èƒŒæ™¯éŸ³ä¹éŸ³é‡
     /// </summary>
     /// <param name="value"></param>
     public void SetMusicVolume(float value)
@@ -123,7 +123,7 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ÉèÖÃÒôĞ§ÒôÁ¿
+    /// è®¾ç½®éŸ³æ•ˆéŸ³é‡
     /// </summary>
     /// <param name="value"></param>
     public void SetSoundVolume(float value)

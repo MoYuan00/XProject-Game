@@ -1,23 +1,23 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¶ÔÏó³Ø´æ·ÅµÄÊı¾İÀàĞÍ
+/// å¯¹è±¡æ± å­˜æ”¾çš„æ•°æ®ç±»å‹
 /// </summary>
 public class PoolObject
 {
-    //¾ßÌå¶ÔÏó
+    //å…·ä½“å¯¹è±¡
     public Object Object;
 
-    //¶ÔÏóÃû×Ö
+    //å¯¹è±¡åå­—
     public string Name;
 
-    //×îºóÒ»´ÎÊ¹ÓÃÊ±¼ä
+    //æœ€åä¸€æ¬¡ä½¿ç”¨æ—¶é—´
     public System.DateTime LastUseTime;
 
     /// <summary>
-    /// ´«Èë¶ÔÏóÃû×ÖºÍ¶ÔÏó
+    /// ä¼ å…¥å¯¹è±¡åå­—å’Œå¯¹è±¡
     /// </summary>
     /// <param name="name"></param>
     /// <param name="obj"></param>
@@ -25,7 +25,7 @@ public class PoolObject
     {
         Name = name;
         Object = obj;
-        //×îºóÒ»´ÎÊ¹ÓÃÊ±¼äÊÇ¶ÔÏó´´½¨µÄÊ±ºòµÄÊ±¼ä
+        //æœ€åä¸€æ¬¡ä½¿ç”¨æ—¶é—´æ˜¯å¯¹è±¡åˆ›å»ºçš„æ—¶å€™çš„æ—¶é—´
         LastUseTime = System.DateTime.Now;
     }
 }
