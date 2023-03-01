@@ -1,61 +1,61 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
 
-    /*****************ÊÂ¼ş¹ÜÀíÆ÷******************/
+    /*****************äº‹ä»¶ç®¡ç†å™¨******************/
 
     public delegate void EnventHandler(object args);
-    //´æËùÓĞÊÂ¼şµÄ×Öµä
+    //å­˜æ‰€æœ‰äº‹ä»¶çš„å­—å…¸
     Dictionary<int, EnventHandler> m_Events = new Dictionary<int, EnventHandler>();
 
     /// <summary>
-    /// ¶©ÔÄÊÂ¼ş
+    /// è®¢é˜…äº‹ä»¶
     /// </summary>
     /// <param name="id"></param>
     /// <param name="e"></param>
     public void Subscribe(int id, EnventHandler e)
     {
-        //Èç¹ûÕâ¸öidÒÑ¾­¶©ÔÄ¹ıÊÂ¼ş¾Í+=ÊÂ¼ş,¶à²¥Î¯ÍĞ
+        //å¦‚æœè¿™ä¸ªidå·²ç»è®¢é˜…è¿‡äº‹ä»¶å°±+=äº‹ä»¶,å¤šæ’­å§”æ‰˜
         if (m_Events.ContainsKey(id))
             m_Events[id] += e;
-        else//Èç¹ûÊÇµÚÒ»´Î¶©ÔÄ¾Í´æÈëÒ»ÏÂ¼¯ºÏ
+        else//å¦‚æœæ˜¯ç¬¬ä¸€æ¬¡è®¢é˜…å°±å­˜å…¥ä¸€ä¸‹é›†åˆ
             m_Events.Add(id, e);
     }
 
     /// <summary>
-    /// È¡Ïû¶©ÔÄ
+    /// å–æ¶ˆè®¢é˜…
     /// </summary>
     /// <param name="id"></param>
     /// <param name="e"></param>
     public void UnSubscribe(int id, EnventHandler e)
     {
-        //Èç¹û×Öµä°üº¬²ÅÖ´ĞĞ
+        //å¦‚æœå­—å…¸åŒ…å«æ‰æ‰§è¡Œ
         if (m_Events.ContainsKey(id))
         {
-            //Èç¹ûÓĞÊÂ¼ş¾ÍÖ´ĞĞÈ¡ÏûÕâ¸öÊÂ¼şµÄ¶©ÔÄ
+            //å¦‚æœæœ‰äº‹ä»¶å°±æ‰§è¡Œå–æ¶ˆè¿™ä¸ªäº‹ä»¶çš„è®¢é˜…
             if (m_Events[id] != null)
                 m_Events[id] -= e;
-            //Èç¹ûÕâ¸öid¶ÔÓ¦µÄÊÂ¼şÒ»¸ö¶¼Ã»ÁË,°Ñµ±Ç°id´Ó×ÖµäÖĞÉ¾³ı
+            //å¦‚æœè¿™ä¸ªidå¯¹åº”çš„äº‹ä»¶ä¸€ä¸ªéƒ½æ²¡äº†,æŠŠå½“å‰idä»å­—å…¸ä¸­åˆ é™¤
             if (m_Events[id] == null)
                 m_Events.Remove(id);
         }
     }
 
     /// <summary>
-    /// Ö´ĞĞÊÂ¼ş
+    /// æ‰§è¡Œäº‹ä»¶
     /// </summary>
     /// <param name="id"></param>
     /// <param name="args"></param>
     public void Fire(int id, object args = null)
     {
         EnventHandler handler;
-        //Èç¹û´æÔÚÒªÖ´ĞĞµÄÊÂ¼ş
+        //å¦‚æœå­˜åœ¨è¦æ‰§è¡Œçš„äº‹ä»¶
         if (m_Events.TryGetValue(id, out handler))
         {
-            //Ö´ĞĞ 
+            //æ‰§è¡Œ 
             handler(args);
         }
     }

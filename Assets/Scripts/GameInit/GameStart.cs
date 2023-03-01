@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +6,11 @@ public class GameStart : MonoBehaviour
 {
     private void Start()
     {
-        //²»¿ÉÏú»Ù,ÇĞ»»³¡¾°Ê±Ò²²»»áÏú»Ù
+        //ä¸å¯é”€æ¯,åˆ‡æ¢åœºæ™¯æ—¶ä¹Ÿä¸ä¼šé”€æ¯
         DontDestroyOnLoad(this);
 
-        //´´½¨¶ÔÏó³Ø
-        Manager.Pool.CreateGameObjectPool("Shot",10);//×Óµ¯µÄ¶ÔÏó³Ø³¬¹ı10Ãë²»ÓÃµÄ¶ÔÏó×Ô¶¯Ïú»Ù
+        //åˆ›å»ºå¯¹è±¡æ± 
+        Manager.Pool.CreateGameObjectPool("Shot",10);//å­å¼¹çš„å¯¹è±¡æ± è¶…è¿‡10ç§’ä¸ç”¨çš„å¯¹è±¡è‡ªåŠ¨é”€æ¯
 
     }
 }

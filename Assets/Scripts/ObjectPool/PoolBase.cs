@@ -1,29 +1,29 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¶ÔÏó³ØµÄ»ùÀà
+/// å¯¹è±¡æ± çš„åŸºç±»
 /// </summary>
 public class PoolBase : MonoBehaviour
 {
-    //×Ô¶¯ÊÍ·ÅÊ±¼ä/Ãë
+    //è‡ªåŠ¨é‡Šæ”¾æ—¶é—´/ç§’
     protected float m_ReleaseTime;
 
-    //ÉÏ´ÎÊÍ·Å×ÊÔ´µÄÊ±¼ä/ºÁÎ¢Ãë 1(Ãë)=10000000(ºÁÎ¢Ãë)
+    //ä¸Šæ¬¡é‡Šæ”¾èµ„æºçš„æ—¶é—´/æ¯«å¾®ç§’ 1(ç§’)=10000000(æ¯«å¾®ç§’)
     protected long m_LastReleaseTime = 0;
 
-    //ÕæÕıµÄ¶ÔÏó³Ø
+    //çœŸæ­£çš„å¯¹è±¡æ± 
     protected List<PoolObject> m_Objects;
 
     public void Start()
     {
-        //³õÊ¼»¯µÄÊ±ºò¸³ÖµÒ»ÏÂÊ±¼äÎªÉÏÒ»´ÎÊÍ·Å×ÊÔ´Ê±¼ä
+        //åˆå§‹åŒ–çš„æ—¶å€™èµ‹å€¼ä¸€ä¸‹æ—¶é—´ä¸ºä¸Šä¸€æ¬¡é‡Šæ”¾èµ„æºæ—¶é—´
         m_LastReleaseTime = System.DateTime.Now.Ticks;
     }
 
     /// <summary>
-    /// ³õÊ¼»¯¶ÔÏó³Ø´«Èë×Ô¶¯ÊÍ·ÅÊ±¼ä/Ãë
+    /// åˆå§‹åŒ–å¯¹è±¡æ± ä¼ å…¥è‡ªåŠ¨é‡Šæ”¾æ—¶é—´/ç§’
     /// </summary>
     /// <param name="time"></param>
     public void Init(float time)
@@ -33,7 +33,7 @@ public class PoolBase : MonoBehaviour
     }
 
     /// <summary>
-    /// È¡³ö¶ÔÏó
+    /// å–å‡ºå¯¹è±¡
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
@@ -51,7 +51,7 @@ public class PoolBase : MonoBehaviour
     }
 
     /// <summary>
-    /// »ØÊÕ¶ÔÏó
+    /// å›æ”¶å¯¹è±¡
     /// </summary>
     public virtual void UnSpwan(string name, Object obj)
     {
@@ -60,7 +60,7 @@ public class PoolBase : MonoBehaviour
     }
 
     /// <summary>
-    /// ÊÍ·Å×ÓÀà×Ô¼ºÖØĞ´=.=
+    /// é‡Šæ”¾å­ç±»è‡ªå·±é‡å†™=.=
     /// </summary>
     public virtual void Release()
     {
@@ -69,12 +69,12 @@ public class PoolBase : MonoBehaviour
 
     private void Update()
     {
-        //Èç¹ûÉÏ´ÎÊÍ·Å×ÊÔ´µÄÊ±¼ä¾àÀëÏÖÔÚµÄÊ±¼ä,³¬¹ıÁË×Ô¶¯ÊÍ·ÅµÄÊ±¼ä¾ÍÊÍ·Å×ÊÔ´  ÏÖÔÚµÄÊ±¼ä¼õÈ¥ÉÏ´ÎÊÍ·ÅµÄÊ±¼ä >= ×Ô¶¯ÊÍ·ÅµÄÊ±¼ä
+        //å¦‚æœä¸Šæ¬¡é‡Šæ”¾èµ„æºçš„æ—¶é—´è·ç¦»ç°åœ¨çš„æ—¶é—´,è¶…è¿‡äº†è‡ªåŠ¨é‡Šæ”¾çš„æ—¶é—´å°±é‡Šæ”¾èµ„æº  ç°åœ¨çš„æ—¶é—´å‡å»ä¸Šæ¬¡é‡Šæ”¾çš„æ—¶é—´ >= è‡ªåŠ¨é‡Šæ”¾çš„æ—¶é—´
         if (System.DateTime.Now.Ticks - m_LastReleaseTime >= m_ReleaseTime * 10000000)
         {
-            //°ÑÏÖÔÚµÄÊ±¼äÔÙÖØĞÂ¸³Öµ¸øÉÏ´ÎÊÍ·ÅµÄÊ±¼ä
+            //æŠŠç°åœ¨çš„æ—¶é—´å†é‡æ–°èµ‹å€¼ç»™ä¸Šæ¬¡é‡Šæ”¾çš„æ—¶é—´
             m_LastReleaseTime = System.DateTime.Now.Ticks;
-            //ÊÍ·Å×ÊÔ´
+            //é‡Šæ”¾èµ„æº
             Release();
         }
     }
