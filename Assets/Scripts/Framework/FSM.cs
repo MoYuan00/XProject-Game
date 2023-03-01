@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace Framework
+namespace FrameworkFSM
 {
     public class FSM<T>  // T state type
     {

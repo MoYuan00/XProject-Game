@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Framework
+namespace FrameworkFSM
 {
     public class FSMArray<T>
     {
@@ -39,6 +38,7 @@ namespace Framework
             _fsmArrayMap.Add(stateId, new List<T>(joinStateIds));
             return Register(stateId);
         }
+        
 
         private void DoChangeState(T stateId, IState state)
         {
@@ -76,6 +76,7 @@ namespace Framework
 
         /// <summary>
         /// 切换或者加入
+        /// 1、同一状态是不可重入的，会忽略重复状态
         /// </summary>
         public void ChangeState(T stateId)
         {
@@ -150,6 +151,18 @@ namespace Framework
         public bool IsRunning(T stateId)
         {
             return _currentStateIds.Contains(stateId);
+        }
+        
+        /// <summary>
+        /// 其中一个正在运行，就返回true
+        /// </summary>
+        /// <param name="stateIds"></param>
+        /// <returns></returns>
+        public bool IsRunningAny(params T[] stateIds)
+        {
+            foreach (var stateId in stateIds)
+                if (IsRunning(stateId)) return true;
+            return false;
         }
 
         public void Clear()
