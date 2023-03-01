@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
+
+    /*****************对象池管理器******************/
+
+
     //挂载对象池的父节点位置
     Transform m_PoolParent;
 
