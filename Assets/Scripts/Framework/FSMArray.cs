@@ -28,7 +28,8 @@ namespace FrameworkFSM
         }
 
         /// <summary>
-        /// 注册这个可以并行的状态，并行状态在进行切换时会加入，而不是切换
+        /// 注册一个可以并行的状态
+        /// 并行状态在进行切换时会加入，而不是切换
         /// </summary>
         /// <param name="stateId"></param>
         /// <param name="joinStateIds">可并行的状态</param>
