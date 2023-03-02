@@ -71,7 +71,7 @@ public class Camera3rdSyncPlayerRotate : MonoBehaviour
             Vector3 combatLookAtDir = new Vector3(combatPos.x, 0, combatPos.z) - new Vector3(cameraPos.x, 0, cameraPos.z);
             var dir = combatLookAtDir.normalized;
             // Debug.DrawLine(playerObj.position, playerObj.position + orientation.forward);
-            // orientation.forward = dir;
+            orientation.forward = dir;
             playerObj.forward = dir;
         }
     }

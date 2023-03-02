@@ -13,6 +13,8 @@ public static class CameraManager
 
     public static void ChangeCameraState(CameraMode cameraState)
     {
+        if(cameraState == CurrentCameraMode) return;
+        
         CurrentCameraMode = cameraState;
         Debug.Log($"ChangeCameraState:{cameraState}");
         OnCameraModeChange.Invoke(cameraState);

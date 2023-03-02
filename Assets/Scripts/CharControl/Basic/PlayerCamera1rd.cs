@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerControlBasic : MonoBehaviour
+public class PlayerCamera1rd : MonoBehaviour
 {
     #region References Params
 
