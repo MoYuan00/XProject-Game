@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Linq;
-using FrameworkFSM;
-using FrameworkAnimation;
+using CharControl;
 using RootMotion.FinalIK;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,7 +29,6 @@ namespace CharControl_New
         [Header("Pistol Aim")] public float pistolAimCooldown = 0.4f;
         private bool _readyPistolAim = true;
 
-
         // 输入
         private Vector2 _inputMoveVec2;
         private bool _inputJump;
@@ -44,7 +39,7 @@ namespace CharControl_New
         private static readonly int IsRunningParam = Animator.StringToHash("IsRunning");
         private static readonly int IsJumpingParam = Animator.StringToHash("IsJumping");
 
-        public CharMoveState state;
+        public PlayerStateManager playerState;
 
         [Header("Aim IK")] public AimIK aimIK;
 
@@ -63,13 +58,13 @@ namespace CharControl_New
         {
             _isOnGround = groundChecker.IsOnGround();
 
-            if (_isOnGround) RemoveState(CharMoveState.Air);
-            else SetState(CharMoveState.Air);
+            if (_isOnGround) playerState.Remove(CharMoveState.Air);
+            else playerState.Append(CharMoveState.Air);
 
             if (_isOnGround)
             {
                 rigidbody.drag = groundDrag;
-                RemoveState(CharMoveState.JumpingUp);
+                playerState.Remove(CharMoveState.JumpingUp);
             }
 
             DoStateMove();
@@ -78,7 +73,7 @@ namespace CharControl_New
 
         private void DoUpdateAimIK()
         {
-            if (ExistState(CharMoveState.PistolAim))
+            if (playerState.Exists(CharMoveState.PistolAim))
             {
                 Invoke(nameof(ResetAimIK), 0.4f);
             }
@@ -97,7 +92,7 @@ namespace CharControl_New
 
         private void DoUpdateCamera()
         {
-            if (ExistState(CharMoveState.PistolAim))
+            if (playerState.Exists(CharMoveState.PistolAim))
             {
                 CameraManager.ChangeCameraState(CameraMode.WalkingAim);
             }
@@ -110,18 +105,18 @@ namespace CharControl_New
         private void DoStatePistolAim()
         {
             if (!_inputPistolAim || !_readyPistolAim) return;
-            if (ExistState(CharMoveState.PistolAim))
+            if (playerState.Exists(CharMoveState.PistolAim))
             {
                 // 取消拔枪
                 animator.SetBool(PistolAimParam, false);
-                RemoveState(CharMoveState.PistolAim);
+                playerState.Remove(CharMoveState.PistolAim);
                 DoUpdateAimIK();
                 return;
             }
 
             _readyPistolAim = false;
             animator.SetBool(PistolAimParam, true);
-            SetState(CharMoveState.PistolAim);
+            playerState.Append(CharMoveState.PistolAim);
             
             CameraManager.ChangeCameraState(CameraMode.WalkingAim);
             DoUpdateAimIK();
@@ -139,11 +134,11 @@ namespace CharControl_New
             _isOnGround = groundChecker.IsOnGround();
             if (!_inputJump || !_readyToJump || !_isOnGround)
             {
-                RemoveState(CharMoveState.JumpingUp);
+                playerState.Remove(CharMoveState.JumpingUp);
                 return;
             }
 
-            SetState(CharMoveState.JumpingUp);
+            playerState.Append(CharMoveState.JumpingUp);
             _readyToJump = false;
             JumpPlayer();
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -180,7 +175,7 @@ namespace CharControl_New
             if (_inputMoveVec2 == Vector2.zero) return;
             var moveSpeed = runningSpeed * runningSpeedScale;
 
-            if (ExistState(CharMoveState.Air))
+            if (playerState.Exists(CharMoveState.Air))
                 moveSpeed *= airSpeedScale;
 
             _targetSpeed = Mathf.Lerp(_targetSpeed, moveSpeed, 0.5f);
@@ -222,35 +217,6 @@ namespace CharControl_New
 
         #endregion
 
-        private void SetState(CharMoveState moveState)
-        {
-            this.state |= moveState;
-            Debug.Log($"State: add '{moveState}'  all: {state}");
-        }
 
-        private void RemoveState(CharMoveState moveState)
-        {
-            if (ExistState(moveState))
-            {
-                var t = state;
-                state -= moveState;
-                Debug.Log($"State: remove '{moveState}'  all: {state}");
-            }
-        }
-
-        private bool ExistState(CharMoveState moveState)
-        {
-            return (state & moveState) == moveState;
-        }
-    }
-
-    [Flags]
-    public enum CharMoveState
-    {
-        Idle = 0,
-        PistolAim = 2, // 瞄准
-        JumpingUp = 4, // 跳起中
-
-        Air = 8, // 是否在空中
     }
 }

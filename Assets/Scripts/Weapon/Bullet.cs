@@ -38,13 +38,14 @@ public class Bullet : MonoBehaviour
     /// </summary>
     public void Explode(Vector3 position, Quaternion dir)
     {
-        var obj = Instantiate(explodeVFX, position, dir);
-        var vfx = obj.GetComponent<ParticleSystem>();
-        vfx.gameObject.SetActive(true);
-        vfx.Play();
-        
-        Destroy(obj, vfx.main.duration);
-        Destroy(gameObject);
+        if (explodeVFX != null)
+        {
+            var obj = Instantiate(explodeVFX, position, dir);
+            var vfx = obj.GetComponent<ParticleSystem>();
+            vfx.gameObject.SetActive(true);
+            vfx.Play();
+            Destroy(obj, vfx.main.duration);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -57,5 +58,6 @@ public class Bullet : MonoBehaviour
             var rotation = Quaternion.LookRotation(point.normal);
             Explode(pos, rotation);
         }
+        Destroy(gameObject);
     }
 }

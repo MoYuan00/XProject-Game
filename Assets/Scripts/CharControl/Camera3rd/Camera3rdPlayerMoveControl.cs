@@ -4,7 +4,7 @@ using FrameworkAnimation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CharControl
+namespace CharControlCamera3rd
 {
     public class Camera3rdPlayerMoveControl : MonoBehaviour
     {
