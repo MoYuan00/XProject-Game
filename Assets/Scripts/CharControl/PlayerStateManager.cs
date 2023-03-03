@@ -11,6 +11,7 @@ namespace CharControl
         JumpingUp = 4, // 跳起中
 
         Air = 8, // 是否在空中
+        WallRunning = 16,
     }
 
     public class PlayerStateManager : MonoBehaviour
@@ -19,6 +20,7 @@ namespace CharControl
 
         public void Append(CharMoveState moveState)
         {
+            if(Exists(moveState)) return;
             this._currentState |= moveState;
             Debug.Log($"State: add '{moveState}'  all: {_currentState}");
         }

@@ -1,3 +1,4 @@
+using System;
 using CharControl;
 using RootMotion.FinalIK;
 using UnityEngine;
@@ -9,10 +10,11 @@ namespace CharControl_New
     {
         private Transform _transform;
         [Header("References")] public Animator animator;
-        public Transform bodyCenter;
         public Rigidbody rigidbody;
         public GroundChecker groundChecker;
         private bool _isOnGround;
+
+        [Header("Movement References")] public Transform playerObj;
 
         [Header("Movement")] public float runningSpeed = 3.442973f;
         public float runningSpeedScale = 1f;
@@ -68,7 +70,6 @@ namespace CharControl_New
             }
 
             DoStateMove();
-            
         }
 
         private void DoUpdateAimIK()
@@ -102,6 +103,8 @@ namespace CharControl_New
             }
         }
 
+        #region PistolAim
+
         private void DoStatePistolAim()
         {
             if (!_inputPistolAim || !_readyPistolAim) return;
@@ -117,10 +120,10 @@ namespace CharControl_New
             _readyPistolAim = false;
             animator.SetBool(PistolAimParam, true);
             playerState.Append(CharMoveState.PistolAim);
-            
+
             CameraManager.ChangeCameraState(CameraMode.WalkingAim);
             DoUpdateAimIK();
-            
+
             StartCoroutine(nameof(ResetPistolAim), pistolAimCooldown);
         }
 
@@ -128,6 +131,10 @@ namespace CharControl_New
         {
             _readyPistolAim = true;
         }
+
+        #endregion
+
+        #region Jumping
 
         private void DoStateJumping()
         {
@@ -157,6 +164,10 @@ namespace CharControl_New
             _readyToJump = true;
         }
 
+        #endregion
+
+        #region Move
+
         private void DoStateMove()
         {
             if (_inputMoveVec2 != Vector2.zero)
@@ -184,6 +195,7 @@ namespace CharControl_New
             rigidbody.velocity = new Vector3(speed.x, rigidbody.velocity.y, speed.z);
         }
 
+        #endregion
 
         #region InputEvent
 
@@ -215,8 +227,8 @@ namespace CharControl_New
             if (_inputJump) DoStateJumping();
         }
 
+
+
         #endregion
-
-
     }
 }

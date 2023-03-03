@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using CharControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 [ExecuteAlways]
+[RequireComponent(typeof(PlayerStateManager))]
 public class ShootControl : MonoBehaviour
 {
     [Tooltip("子弹预制体")] public Bullet bulletObj;
@@ -12,6 +14,8 @@ public class ShootControl : MonoBehaviour
     public LayerMask shootLayerMask; // 可以设计的目标层级
 
     public float maxShootDistance = 200;
+
+    private PlayerStateManager _playerStateManager;
 
     //子弹的父节点
     public Transform m_UIParent;
@@ -23,6 +27,7 @@ public class ShootControl : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
+        _playerStateManager = GetComponent<PlayerStateManager>();
     }
 
     private void OnDrawGizmos()
