@@ -10,6 +10,7 @@ namespace PlayerFramework
         [Header("wall face")] public float faceWallCheckLength = 0.2f;
         public float faceWallAngle = 35.0f;
         public Transform wallFaceCenter;
+        public Transform wallFaceHead;
         public Transform wallFaceFoot;
         private bool _isHitWall; // 是否碰到了墙壁
         private Collision _collision;
@@ -45,11 +46,15 @@ namespace PlayerFramework
         {
             if (Physics.Raycast(wallFaceCenter.position, wallFaceCenter.forward, out var hit, faceWallCheckLength))
             {
-                // 脚底和碰撞点的高度差：
-                var h = wallFaceCenter.position - wallFaceFoot.position;
-                hitPosition = hit.point - h;
-                hitDir = -hit.normal;
-                return true;
+                // 如果头部位置，也有墙体，那么就表示前面真的有一堵墙
+                if (Physics.Raycast(wallFaceHead.position, wallFaceHead.forward, out var _, faceWallCheckLength))
+                {
+                    // 脚底和碰撞点的高度差：
+                    var h = wallFaceCenter.position - wallFaceFoot.position;
+                    hitPosition = hit.point - h;
+                    hitDir = -hit.normal;
+                    return true;
+                }
             }
             hitDir = Vector3.right;
             hitPosition = Vector3.zero;
@@ -60,6 +65,8 @@ namespace PlayerFramework
         {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(wallFaceCenter.position, wallFaceCenter.position + wallFaceCenter.forward * faceWallCheckLength);
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(wallFaceHead.position, wallFaceHead.position + wallFaceHead.forward * faceWallCheckLength);
         }
     }
 }

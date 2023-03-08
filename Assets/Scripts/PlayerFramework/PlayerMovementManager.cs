@@ -19,7 +19,7 @@ public class PlayerMovementManager : MonoBehaviour
     public float walkSpeed = 3f;
     public float runSpeed = 5.5f;
     public float jumpMaxHeight = 1.0f;
-    
+    public float aimWalkSpeed = 3f;
     public float climbSpeed = 1f;
 
     public float speedY;

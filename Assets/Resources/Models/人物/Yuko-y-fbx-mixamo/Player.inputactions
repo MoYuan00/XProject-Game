@@ -29,11 +29,11 @@
                     "id": "57ade330-ac8a-433d-9657-85f1cece4a7f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crouch",
+                    "name": "Aim",
                     "type": "Button",
                     "id": "6d0810d7-7dd5-4e71-9a98-816ea64ce7d6",
                     "expectedControlType": "Button",
@@ -132,11 +132,11 @@
                 {
                     "name": "",
                     "id": "d66930e2-1d48-412c-8071-7edc5290a35a",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
+                    "path": "<Keyboard>/f",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Player",
-                    "action": "Crouch",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerFramework
@@ -94,7 +91,7 @@ namespace PlayerFramework
                 })
                 .OnUpdate(() =>
                 {
-                    _movement.ClimbWithInput(_input.inputMoveVec2); 
+                    _movement.ClimbWithInput(_input.inputMoveVec2);
                     _anim.Climb(_movement.speedY);
                 })
                 .OnExit(() =>
@@ -103,6 +100,18 @@ namespace PlayerFramework
                     _anim.ClimbEnd();
                     _movement.isEnableRootMotionMove = true;
                 });
+
+            _state.movementFSM.State(PlayerMovementState.Aim)
+                .OnEnter(() => { _anim.Aim(0f); })
+                .OnUpdate(() =>
+                {
+                    _movement.Rotate(_input.inputMoveVec2);
+                    _anim.Aim(_movement.aimWalkSpeed * _input.inputMoveVec2.y);
+                })
+                .OnExit(() => { _anim.AimEnd(); });
+
+            OnInputAim();
+            OnInputJump();
         }
 
         private void Update()
@@ -116,6 +125,41 @@ namespace PlayerFramework
         {
             _state.positionFSM.FixUpdate();
             _state.movementFSM.FixUpdate();
+        }
+
+        void OnInputAim()
+        {
+            _input.onInputAim = () =>
+            {
+                if (_state.movementFSM.IsRunning(PlayerMovementState.Aim))
+                    _state.movementFSM.Exit(PlayerMovementState.Aim);
+                else
+                    _state.movementFSM.ChangeState(PlayerMovementState.Aim);
+            };
+        }
+
+        void OnInputJump()
+        {
+            _input.onInputJump = () =>
+            {
+                if (_state.movementFSM.IsRunning(PlayerMovementState.WallClamp))
+                {
+                    // 按下跳跃键，脱离 爬墙状态
+                    // TODO Bug - 跳墙会重新进入爬墙状态，这里应该让物体离开墙体一段距离 防止再次爬墙。
+                    transform.position += -_hitDir * 0.2f;
+
+                    _state.movementFSM.Exit(PlayerMovementState.WallClamp);
+                    _state.positionFSM.Exit(PlayerPositionState.FixedAir);
+                    _state.positionFSM.ChangeState(PlayerPositionState.MidAir);
+                    return;
+                }
+                
+                if (_readyToJump && _env.CheckIsGrounded())
+                {
+                    _state.movementFSM.ChangeState(PlayerMovementState.Jump);
+                    return;
+                }
+            };
         }
 
         void SwitchPlayerStates()
@@ -141,9 +185,10 @@ namespace PlayerFramework
 
             if (isGrounded) // 落地才允许进行移动
             {
-                if (_input.isInputJumping && _readyToJump
-                    || _state.movementFSM.IsRunning(PlayerMovementState.Jump))
+                if (_state.movementFSM.IsRunning(PlayerMovementState.Jump))
                     _state.movementFSM.ChangeState(PlayerMovementState.Jump);
+                else if (_state.movementFSM.IsRunning(PlayerMovementState.Aim))
+                    _state.movementFSM.ChangeState(PlayerMovementState.Aim);
                 else if (_input.inputMoveVec2.magnitude == 0)
                     _state.movementFSM.ChangeState(PlayerMovementState.Idle);
                 else if (_input.isInputRunning)
@@ -160,20 +205,6 @@ namespace PlayerFramework
                     // 触发爬墙
                     _state.movementFSM.ChangeState(PlayerMovementState.WallClamp);
                     _state.positionFSM.ChangeState(PlayerPositionState.FixedAir);
-                }
-            }
-
-            if (_state.movementFSM.IsRunning(PlayerMovementState.WallClamp))
-            {
-                // 按下跳跃键，脱离 爬墙状态
-                if (_input.isInputJumping)
-                {
-                    // TODO Bug - 跳墙会重新进入爬墙状态，这里应该让物体离开墙体一段距离 防止再次爬墙。
-                    transform.position += -_hitDir * 0.2f;
-
-                    _state.movementFSM.Exit(PlayerMovementState.WallClamp);
-                    _state.positionFSM.Exit(PlayerPositionState.FixedAir);
-                    _state.positionFSM.ChangeState(PlayerPositionState.MidAir);
                 }
             }
         }

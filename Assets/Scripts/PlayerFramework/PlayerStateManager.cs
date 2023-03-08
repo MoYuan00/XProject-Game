@@ -34,6 +34,7 @@ namespace PlayerFramework
         Run = 1 << 2,
         Jump = 1 << 3,
         WallClamp = 1 << 4, // 爬墙
+        Aim, // 瞄准-持枪
     }
 
     // public enum PlayerEnvState

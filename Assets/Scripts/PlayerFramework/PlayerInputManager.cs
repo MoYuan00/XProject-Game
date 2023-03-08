@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace PlayerFramework
@@ -27,13 +29,20 @@ namespace PlayerFramework
         public void GetAimInput(InputAction.CallbackContext ctx)
         {
             isInputAiming = ctx.ReadValueAsButton();
+            if (ctx.phase == InputActionPhase.Started)
+                onInputAim?.Invoke();
         }
 
         public void GetJumpInput(InputAction.CallbackContext ctx)
         {
             isInputJumping = ctx.ReadValueAsButton();
+            if(ctx.phase == InputActionPhase.Started)
+                onInputJump?.Invoke();
         }
 
         #endregion
+
+        public Action onInputAim = null;
+        public Action onInputJump = null;
     }
 }
