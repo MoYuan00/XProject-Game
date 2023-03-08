@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using CharControl;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -24,6 +25,10 @@ public class ShootControl : MonoBehaviour
 
     public Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0);
 
+    public AudioSource audioSource;
+
+    public UnityEvent onShoot;
+
     private void Start()
     {
         _camera = Camera.main;
@@ -37,34 +42,17 @@ public class ShootControl : MonoBehaviour
     }
 
 
-    IEnumerator Shoot(Vector3 position, Quaternion dir)
+    void Shoot(Vector3 position, Quaternion dir)
     {
-        Bullet bullet;
-        //去对象池找
-        UnityEngine.Object uiObj = Manager.Pool.Spawn("Shot", "子弹");
-
-        //如果找到了执行这个
-        if (uiObj != null)
-        {
-            GameObject game = uiObj as GameObject;
-            //从对象池返回的对象需要设置一下父节点
-            game.transform.SetParent(m_UIParent, false);
-            bullet = game.GetComponent<Bullet>();
-            yield return null;
-        }
-        else
-        {
-            bullet = Instantiate<Bullet>(bulletObj, position, dir);
-            bullet.transform.SetParent(m_UIParent, false);
-        }
-
+       
+        Bullet bullet = Instantiate<Bullet>(bulletObj, position, dir);
+        bullet.transform.SetParent(m_UIParent, false);
         bullet.direction = GetShootDirection();
+        bullet.gameObject.transform.forward = bullet.direction;
 
-        GameObject go = bullet.gameObject;
-
-        // 等待3秒
-        yield return new WaitForSeconds(3);
-        Manager.Pool.UnSpawn("Shot", "子弹", go); //子弹应该超出一定距离放入对象池
+        
+        PlayerShootAudio();
+        onShoot?.Invoke();
     }
 
     private Vector3 GetShootDirection()
@@ -81,6 +69,13 @@ public class ShootControl : MonoBehaviour
     {
         if (ctx.phase != InputActionPhase.Performed) return;
         Debug.Log("OnFire");
-        StartCoroutine(Shoot(shootTrans.position, shootTrans.rotation));
+        Shoot(shootTrans.position, shootTrans.rotation);
     }
+
+    private void PlayerShootAudio()
+    {
+        audioSource.PlayOneShot(audioSource.clip);
+    }
+    
+    
 }

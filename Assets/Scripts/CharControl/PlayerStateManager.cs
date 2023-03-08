@@ -9,9 +9,9 @@ namespace CharControl
         Idle = 0,
         PistolAim = 2, // 瞄准
         JumpingUp = 4, // 跳起中
-
         Air = 8, // 是否在空中
         WallRunning = 16,
+        JumpingDown = 32
     }
 
     public class PlayerStateManager : MonoBehaviour
@@ -38,6 +38,11 @@ namespace CharControl
         public bool Exists(CharMoveState moveState)
         {
             return (_currentState & moveState) == moveState;
+        }
+        
+        public bool NotExists(CharMoveState moveState)
+        {
+            return !Exists(moveState);
         }
     }
 }

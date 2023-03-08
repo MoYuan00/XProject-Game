@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
 
     public void Start()
     {
-        _rigidbody.velocity = direction * speed;
+        _rigidbody.velocity = direction.normalized * speed;
     }
 
     /// <summary>

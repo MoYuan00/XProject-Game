@@ -1,5 +1,6 @@
 using System;
 using CharControl;
+using Framework.Utils;
 using RootMotion.FinalIK;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,9 +25,13 @@ namespace CharControl_New
 
         [Header("Jump")] public float jumpUpSpeed;
         public float jumpCooldown = 0.2f;
-        public float fallDownSpeed = 5f; // 跌落的速度曲线
+        public AnimationCurve fallDownSpeedCurve; // 跌落的速度曲线
+        private AnimationCurveHelper _fallDownSpeedCurveHelper;
+
         private bool _readyToJump = true;
         public float jumpMaxHeight = 1f;
+        public AnimationCurve jumpSpeedCurve;
+        private AnimationCurveHelper _jumpSpeedCurveHelper;
 
         [Header("Pistol Aim")] public float pistolAimCooldown = 0.4f;
         private bool _readyPistolAim = true;
@@ -45,9 +50,13 @@ namespace CharControl_New
 
         [Header("Aim IK")] public AimIK aimIK;
 
+        public float timeScale = 0.3f;
+
         private void Awake()
         {
             _transform = transform;
+            _fallDownSpeedCurveHelper = new AnimationCurveHelper(fallDownSpeedCurve);
+            _jumpSpeedCurveHelper = new AnimationCurveHelper(jumpSpeedCurve);
         }
 
         public void Start()
@@ -58,6 +67,7 @@ namespace CharControl_New
 
         private void Update()
         {
+            Time.timeScale = timeScale;
             _isOnGround = groundChecker.IsOnGround();
 
             if (_isOnGround) playerState.Remove(CharMoveState.Air);
@@ -66,10 +76,34 @@ namespace CharControl_New
             if (_isOnGround)
             {
                 rigidbody.drag = groundDrag;
-                playerState.Remove(CharMoveState.JumpingUp);
             }
 
             DoStateMove();
+
+
+            DoFallDown();
+            DoStateJumping();
+        }
+
+        public void JumpingToTopPoint(int s)
+        {
+            if (s != 1) return;
+            playerState.Append(CharMoveState.JumpingDown);
+            playerState.Remove(CharMoveState.JumpingUp);
+        }
+
+        private void DoFallDown() // 跌落
+        {
+            if (playerState.Exists(CharMoveState.JumpingUp) || _isOnGround)
+            {
+                _fallDownSpeedCurveHelper.Reset();
+                playerState.Remove(CharMoveState.JumpingDown);
+                return;
+            }
+            
+            var velocity = rigidbody.velocity;
+            velocity = new Vector3(velocity.x, velocity.y + _fallDownSpeedCurveHelper.GetValue(), velocity.z);
+            rigidbody.velocity = velocity;
         }
 
         private void DoUpdateAimIK()
@@ -141,7 +175,7 @@ namespace CharControl_New
             _isOnGround = groundChecker.IsOnGround();
             if (!_inputJump || !_readyToJump || !_isOnGround)
             {
-                playerState.Remove(CharMoveState.JumpingUp);
+                _jumpSpeedCurveHelper.Reset();
                 return;
             }
 
@@ -156,7 +190,13 @@ namespace CharControl_New
         private void JumpPlayer()
         {
             var velocity = rigidbody.velocity;
-            rigidbody.velocity = new Vector3(velocity.x, jumpUpSpeed, velocity.z);
+            rigidbody.velocity = new Vector3(velocity.x, GetJumpSpeedY(), velocity.z);
+        }
+
+        private float GetJumpSpeedY()
+        {
+            _jumpSpeedCurveHelper.IncreaseUpdateTime();
+            return _jumpSpeedCurveHelper.GetValue();
         }
 
         private void ResetJump()
@@ -226,8 +266,6 @@ namespace CharControl_New
             Debug.Log("OnJumping");
             if (_inputJump) DoStateJumping();
         }
-
-
 
         #endregion
     }
