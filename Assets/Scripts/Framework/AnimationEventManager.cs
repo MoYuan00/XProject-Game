@@ -6,8 +6,7 @@ namespace FrameworkAnimation
 {
     public enum AnimationStateName
     {
-        JumpingUp,
-        JumpingDown,
+        ClimbUp
     }
 
     public class AnimationEventManager

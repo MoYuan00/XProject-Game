@@ -22,6 +22,7 @@ namespace PlayerFramework
         private int wallClimbSpeed = Animator.StringToHash("攀爬速度");
         private int isClimb = Animator.StringToHash("IsClimb");
         private int isAim = Animator.StringToHash("IsPistol");
+        private int climbUp = Animator.StringToHash("ClimbUp");
 
         private void Start()
         {
@@ -32,6 +33,11 @@ namespace PlayerFramework
         {
             _animator.SetFloat(postureHash, playerPostureStandThreshold, 0.1f, Time.deltaTime);
             _animator.SetFloat(moveSpeedHash, 0, 0.1f, Time.deltaTime);
+        }
+
+        public void CleanMoveSpeed()
+        {   
+            _animator.SetFloat(moveSpeedHash, 0f);
         }
         
         public void Walk(float speed)
@@ -79,6 +85,12 @@ namespace PlayerFramework
             _animator.SetBool(isClimb, false);
             _animator.SetFloat(wallClimbSpeed, 0f);
         }
+
+        public void ClimbUp()
+        {
+            _animator.SetBool(climbUp, true);
+        }
+        
 
         public void Aim(float speed)
         {

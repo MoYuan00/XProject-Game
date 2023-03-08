@@ -12,6 +12,8 @@ namespace FrameworkFSM
         protected IState _currentState;
         protected T _currentStateId;
 
+        public Action<T> onChangeState = null;
+
 
         /// <summary>
         /// 注册状态机
@@ -34,6 +36,7 @@ namespace FrameworkFSM
         {
             if ((_currentStateId).Equals(t) && _currentState != null) return;
             Debug.Log($"ChangeState To : '{t}'");
+            onChangeState?.Invoke(t);
             ForceChangeState(t);
         }
 

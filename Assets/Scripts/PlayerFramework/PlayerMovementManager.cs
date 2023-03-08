@@ -32,6 +32,7 @@ public class PlayerMovementManager : MonoBehaviour
     private Vector3 _midairMovement;
 
     public bool isEnableRootMotionMove = true;
+    public bool isSyncAnimatorSpeedY; // 是否使用动画里面的Y方向速度
 
     private void Awake()
     {
@@ -46,7 +47,10 @@ public class PlayerMovementManager : MonoBehaviour
         if(!isEnableRootMotionMove) return;
         // 使用动画里面的速度
         Vector3 deltaMovement = _animator.deltaPosition;
-        deltaMovement.y = speedY * Time.deltaTime;
+        if (!isSyncAnimatorSpeedY)
+        {
+            deltaMovement.y = speedY * Time.deltaTime;
+        }
         characterController.Move(deltaMovement);
     }
 

@@ -1,3 +1,4 @@
+using FrameworkAnimation;
 using UnityEngine;
 
 namespace PlayerFramework
@@ -20,9 +21,6 @@ namespace PlayerFramework
         public float climbCooldown = 0.2f;
         public bool _readyClimb = true;
         public float airASpeedMult = 1.5f;
-
-        private Vector3 _hitPos;
-        private Vector3 _hitDir;
 
         private void Start()
         {
@@ -83,14 +81,19 @@ namespace PlayerFramework
                     // 墙壁碰撞点，固定当前角色到碰撞点
                     // 播放动画
                     // TODO 角色需要面向墙壁
-                    var pos = _hitPos;
-                    transform.position = pos;
-                    transform.forward = _hitDir;
+                    transform.position = _env.climbingWall.hitReltivePosition;
+                    transform.forward = -_env.climbingWall.hisPositionNormal;
                     _anim.Climb(0f);
                     _movement.isEnableRootMotionMove = false;
                 })
                 .OnUpdate(() =>
                 {
+                    // 判断头顶是否已经有距离了，当前是否可以离开墙体，直接越上
+                    if (_env.CheckTopHasSpace())
+                    {
+                        _state.movementFSM.ChangeState(PlayerMovementState.ClimbUp);
+                        return;
+                    }
                     _movement.ClimbWithInput(_input.inputMoveVec2);
                     _anim.Climb(_movement.speedY);
                 })
@@ -102,7 +105,10 @@ namespace PlayerFramework
                 });
 
             _state.movementFSM.State(PlayerMovementState.Aim)
-                .OnEnter(() => { _anim.Aim(0f); })
+                .OnEnter(() =>
+                {
+                    _anim.Aim(0f);
+                })
                 .OnUpdate(() =>
                 {
                     _movement.Rotate(_input.inputMoveVec2);
@@ -110,6 +116,25 @@ namespace PlayerFramework
                 })
                 .OnExit(() => { _anim.AimEnd(); });
 
+            _state.movementFSM.State(PlayerMovementState.ClimbUp)
+                .OnEnter(() =>
+                {
+                    _anim.CleanMoveSpeed();
+                    _anim.ClimbUp();
+                    _movement.isSyncAnimatorSpeedY = true;
+                    // _movement.isEnableRootMotionMove = true;
+                    _movement.speedY = 0;
+                })
+                .OnExit(() =>
+                {
+                    _movement.isSyncAnimatorSpeedY = false;
+                });
+            AnimationEventManager.OnStateExit(AnimationStateName.ClimbUp, () =>
+            {
+                _state.movementFSM.Exit(PlayerMovementState.ClimbUp);
+                _state.positionFSM.Exit(PlayerPositionState.FixedAir);
+            });
+            
             OnInputAim();
             OnInputJump();
         }
@@ -146,7 +171,7 @@ namespace PlayerFramework
                 {
                     // 按下跳跃键，脱离 爬墙状态
                     // TODO Bug - 跳墙会重新进入爬墙状态，这里应该让物体离开墙体一段距离 防止再次爬墙。
-                    transform.position += -_hitDir * 0.2f;
+                    transform.position -= transform.forward * 0.2f;
 
                     _state.movementFSM.Exit(PlayerMovementState.WallClamp);
                     _state.positionFSM.Exit(PlayerPositionState.FixedAir);
@@ -173,8 +198,7 @@ namespace PlayerFramework
 
             if (isGrounded && _state.movementFSM.IsNotRunning(PlayerMovementState.Jump))
                 _state.positionFSM.ChangeState(PlayerPositionState.Grounded);
-            else if (_env.CheckFaceWall(out var t, out var t2) &&
-                     _state.positionFSM.IsRunning(PlayerPositionState.FixedAir))
+            else if (_state.positionFSM.IsRunning(PlayerPositionState.FixedAir))
             {
                 _state.positionFSM.ChangeState(PlayerPositionState.FixedAir);
             }
@@ -200,7 +224,7 @@ namespace PlayerFramework
             if (_state.positionFSM.IsRunning(PlayerPositionState.MidAir))
             {
                 // 在空中
-                if (_readyClimb && _env.CheckFaceWall(out _hitPos, out _hitDir)) // 碰到墙
+                if (_readyClimb && _env.CheckFaceWall()) // 碰到墙
                 {
                     // 触发爬墙
                     _state.movementFSM.ChangeState(PlayerMovementState.WallClamp);

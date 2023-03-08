@@ -12,10 +12,20 @@ namespace PlayerFramework
     /// 2、角色的移动状态：是idle，还是walk，还是run，jump、持枪、爬墙
     /// 4、角色的周围环境位置：是否面对墙壁，是否左右有墙壁
     /// </summary>
+    [ExecuteAlways]
     public class PlayerStateManager : MonoBehaviour
     {
         public readonly FSM<PlayerPositionState> positionFSM = new FSM<PlayerPositionState>();
         public readonly FSM<PlayerMovementState> movementFSM = new FSM<PlayerMovementState>();
+
+        public PlayerPositionState currentPositionState;
+        public PlayerMovementState currentMovementState;
+
+        private void Start()
+        {
+            positionFSM.onChangeState = newState => { currentPositionState = newState; };
+            movementFSM.onChangeState = newState => { currentMovementState = newState; };
+        }
     }
 
     [Flags]
@@ -34,7 +44,8 @@ namespace PlayerFramework
         Run = 1 << 2,
         Jump = 1 << 3,
         WallClamp = 1 << 4, // 爬墙
-        Aim, // 瞄准-持枪
+        Aim = 1 << 5, // 瞄准-持枪
+        ClimbUp = 1 << 6, // 爬墙翻上
     }
 
     // public enum PlayerEnvState

@@ -82,20 +82,20 @@ namespace CharControlCamera3rd
                     rigidbody.AddForce(transform.up * jumpUpForce, ForceMode.Impulse);
                 }).OnExit(() => { animator.SetBool(IsJumping, false); });
 
-            AnimationEventManager.OnStateExit(AnimationStateName.JumpingUp,
-                () =>
-                {
-                    _fsm.ChangeState(CharMoveState.JumpingDown);
-                });
-
-
-            _fsm.Register(CharMoveState.JumpingDown)
-                .OnFixUpdate(() =>
-                {
-                    rigidbody.AddForce(transform.up * jumpDownForce, ForceMode.Force);
-                });
-            AnimationEventManager.OnStateExit(AnimationStateName.JumpingDown,
-                () => _fsm.ExitState(CharMoveState.JumpingDown));
+            // AnimationEventManager.OnStateExit(AnimationStateName.JumpingUp,
+            //     () =>
+            //     {
+            //         _fsm.ChangeState(CharMoveState.JumpingDown);
+            //     });
+            //
+            //
+            // _fsm.Register(CharMoveState.JumpingDown)
+            //     .OnFixUpdate(() =>
+            //     {
+            //         rigidbody.AddForce(transform.up * jumpDownForce, ForceMode.Force);
+            //     });
+            // AnimationEventManager.OnStateExit(AnimationStateName.JumpingDown,
+            //     () => _fsm.ExitState(CharMoveState.JumpingDown));
         }
 
         #endregion
