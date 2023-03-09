@@ -34,6 +34,8 @@ public class PlayerMovementManager : MonoBehaviour
     public bool isEnableRootMotionMove = true;
     public bool isSyncAnimatorSpeedY; // 是否使用动画里面的Y方向速度
 
+    [Header("Aim")] public float rotateCameraSpeed = 100f;
+
     private void Awake()
     {
         mainCamera = Camera.main;
@@ -92,7 +94,7 @@ public class PlayerMovementManager : MonoBehaviour
     }
 
 
-    public float Rotate(Vector2 inputMoveVec2)
+    public float RotateWithInputCameraSpace(Vector2 inputMoveVec2)
     {
         _animatorMovement = transform.InverseTransformVector(CalculateInputDirection(inputMoveVec2));
         float rad = inputMoveVec2 == Vector2.zero
@@ -102,6 +104,13 @@ public class PlayerMovementManager : MonoBehaviour
         _animatorManager.Rotate(rad);
         transform.Rotate(0, rad * rotateSpeed * Time.deltaTime, 0f);
         return rad;
+    }
+
+    public void RotateFollowMouse(Vector2 mouseDir)
+    {
+        float yRotation = transform.rotation.eulerAngles.y;
+        yRotation += mouseDir.x * Time.deltaTime * rotateCameraSpeed;
+        transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
     // 计算出移动的方向

@@ -46,17 +46,17 @@ namespace PlayerFramework
             _state.movementFSM.State(PlayerMovementState.Walk)
                 .OnUpdate(() =>
                 {
-                    _movement.Rotate(_input.inputMoveVec2);
+                    _movement.RotateWithInputCameraSpace(_input.inputMoveVec2);
                     _anim.Walk(_movement.Speed * _movement.walkSpeed);
                 })
-                .OnExit(() => { _movement.Rotate(Vector2.zero); });
+                .OnExit(() => { _movement.RotateWithInputCameraSpace(Vector2.zero); });
 
             _state.movementFSM.State(PlayerMovementState.Run)
                 .OnUpdate(() =>
                 {
-                    _movement.Rotate(_input.inputMoveVec2);
+                    _movement.RotateWithInputCameraSpace(_input.inputMoveVec2);
                     _anim.Run(_movement.Speed * _movement.runSpeed);
-                }).OnExit(() => { _movement.Rotate(Vector2.zero); });
+                }).OnExit(() => { _movement.RotateWithInputCameraSpace(Vector2.zero); });
 
             _state.movementFSM.State(PlayerMovementState.Jump)
                 .OnEnter(() =>
@@ -67,9 +67,12 @@ namespace PlayerFramework
                 })
                 .OnFixUpdate(() =>
                 {
-                    _movement.Rotate(_input.inputMoveVec2);
+                    _movement.RotateWithInputCameraSpace(_input.inputMoveVec2);
                     _movement.AirMovementWithInput(_input.inputMoveVec2);
-                }).OnExit(() => { Invoke(nameof(ResetJump), jumpCooldown); });
+                }).OnExit(() =>
+                {
+                    Invoke(nameof(ResetJump), jumpCooldown); 
+                });
 
             _state.positionFSM.State(PlayerPositionState.FixedAir)
                 .OnEnter(() => { _movement.speedY = 0; });
@@ -107,14 +110,19 @@ namespace PlayerFramework
             _state.movementFSM.State(PlayerMovementState.Aim)
                 .OnEnter(() =>
                 {
+                    CameraManager.ChangeCameraState(CameraMode.WalkingAim);
                     _anim.Aim(0f);
                 })
                 .OnUpdate(() =>
                 {
-                    _movement.Rotate(_input.inputMoveVec2);
+                    _movement.RotateFollowMouse(_input.mouseMoveDir);
                     _anim.Aim(_movement.aimWalkSpeed * _input.inputMoveVec2.y);
                 })
-                .OnExit(() => { _anim.AimEnd(); });
+                .OnExit(() =>
+                {
+                    _anim.AimEnd(); 
+                    CameraManager.ChangeCameraState(CameraMode.Free);
+                });
 
             _state.movementFSM.State(PlayerMovementState.ClimbUp)
                 .OnEnter(() =>
